@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boni.dto.CatagoryDto;
 import com.boni.entity.table_catagory;
 import com.boni.service.TableCategoryService;
 
@@ -24,9 +25,9 @@ public class CategoryController {
 	private TableCategoryService categoryService;
 	
 	@PostMapping("/save-category")
-	public ResponseEntity<?> saveCategory(@RequestBody table_catagory category)
+	public ResponseEntity<?> saveCategory(@RequestBody CatagoryDto categoryDto)
 	{
-		Boolean savecatagory = categoryService.savecatagory(category);
+		Boolean savecatagory = categoryService.savecatagory(categoryDto);
 		if(savecatagory)
 		{
 		return new ResponseEntity<>("saved successfully",HttpStatus.CREATED);
@@ -42,7 +43,7 @@ public class CategoryController {
 	@GetMapping("/getcatagory")
 	public ResponseEntity<?> getAllCategory()
 	{
-		List<table_catagory> allcategory = categoryService.getAllCategory();
+		List<CatagoryDto>  allcategory = categoryService.getAllCategory();
 		if(org.springframework.util.CollectionUtils.isEmpty(allcategory))
 		{
 		return ResponseEntity.noContent().build();
