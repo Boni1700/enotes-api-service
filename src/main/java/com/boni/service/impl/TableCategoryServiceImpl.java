@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.boni.dto.CatagoryDto;
+import com.boni.dto.CatagoryResponse;
 import com.boni.entity.table_catagory;
 import com.boni.repository.TableCategoryRepository;
 import com.boni.service.TableCategoryService;
@@ -55,5 +56,38 @@ public class TableCategoryServiceImpl implements TableCategoryService{
 		}		
 		return dtoList;
 	}
+
+	@Override
+	public List<CatagoryResponse> getActiveCatagory() {
+       List<table_catagory> allCategories = categoryRepo.findActiveCategoriesNative();
+       List<CatagoryResponse> catResponseList = new ArrayList<CatagoryResponse>();
+       for(table_catagory tc: allCategories)
+       {
+       CatagoryResponse catResponse = new CatagoryResponse();
+       catResponse.setId(tc.getId());
+       catResponse.setDescription(tc.getDescription());
+       catResponse.setName(tc.getCatagoryName());
+       catResponseList.add(catResponse);
+       }
+       
+    return catResponseList;
+
+	}
+
+	
+	@Override
+	public CatagoryDto getCategoryById(Integer id) {
+
+	    table_catagory tc = categoryRepo.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Category not found"));
+
+	    CatagoryDto dto = new CatagoryDto();
+	    dto.setId(tc.getId());
+	    dto.setCatagoryName(tc.getCatagoryName());
+	    dto.setDescription(tc.getDescription());
+
+	    return dto;
+	}
+
 
 }
